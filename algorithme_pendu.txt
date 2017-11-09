@@ -1,0 +1,79 @@
+//LENNY MORICONI
+
+ALGORITHME pendu
+//BUT : Programme qui demande à un joueur 1 de saisir une chaîne de caractère à trouver, puis à un joueur 2 de saisir un caractère afin de deviner le mot. Le joueur 2 a le droit à 7 erreurs. Le mot à trouver doit contenir au minimum 3 caractères.
+//ENTREE : Chaîne de caractères à trouver saisie par joueur 1, caractère proposé par joueur 2.
+//SORTIE : A chaque saisie de joueur 2 : nombre d'essais restants, mot caché complété des éventuels caractères trouvés par joueur 2, "Faux !" si proposition erronée, sinon "Correct !".
+
+CONST
+	TAILLE = 30		//taille maximale d'une chaîne de caractères
+	VIE = 7			//nombre d'erreurs que le joueur 2 peut commettre
+	MIN = 3			//taille minimale du mot à trouver
+
+VAR
+	mot,motCache : CHAINE
+	saisie : CARACTERE
+	cptEssai,longueurMot,i : ENTIER
+	trouve : BOOLEEN
+
+DEBUT
+	
+	//initialisation des variables
+
+	longueurMot <- 0
+	motCache <- ""
+	cptEssai <- VIE
+
+	//boucle tant que le mot à trouver ne fait pas une taille de minimum 3 caractères
+	
+	TANTQUE longueurMot < MIN FAIRE
+		ECRIRE "Joueur 1, saisissez un mot d'au moins ",MIN," lettres a trouver :"
+		LIRE mot
+		SI longueurMot < MIN ALORS
+			ECRIRE "!!! Le mot doit contenir au moins",MIN,"lettres !!!"
+		FINSI
+	FINTANTQUE
+
+	longueurMot <- LONGUEUR(mot)
+
+	//créer le mot caché contenant autant de lettres que le mot à trouver et complété des caractères trouvés par le joueur 2
+	
+	POUR i DE 1 A longueurMot FAIRE
+		motCache <- motCache + "*"
+	FINPOUR
+
+	//le joueur 2 propose des lettres tant qu'il n'a pas trouvé toutes les lettres du mot à trouver ou qu'il n'a pas commis 7 erreurs
+
+	TANTQUE motCache != mot ET cptEssai > 0 FAIRE
+		trouve <- FAUX
+		ECRIRE "Mot à trouver : ",motCache
+		ECRIRE "Joueur 2, proposez une lettre. Il vous reste ",cptEssai," essai(s)"
+		LIRE saisie
+
+		//boucle for pour vérifier si la lettre proposée est dans le mot à trouver, si c'est le cas alors "trouve" prend la valeur "VRAI"
+
+		POUR i DE 1 A longueurMot FAIRE
+			SI saisie = mot[i] ALORS
+				motCache[i] = saisie
+				trouve <- VRAI
+			FINSI
+		FINPOUR
+
+		//si la valeur de "trouve" est toujours "FAUX" alors la lettre proposée n'est pas dans le mot à trouver, le joueur 2 perd donc une vie
+
+		SI trouve = FAUX ALORS
+			cptEssai <- cptEssai - 1
+			ECRIRE "Faux !"
+		SINON
+			ECRIRE "Correct !"
+		FINSI
+	FINTANTQUE
+
+	//lorsqu'on sort de la boucle while, si le joueur 2 a encore des vies, cela signifie qu'il a forcément trouvé le mot (victoire), sinon c'est qu'il a commis 7 erreurs (défaite)
+
+	SI cptEssai != 0 ALORS
+		ECRIRE "Bravo !"
+	SINON
+		ECRIRE "Vous avez perdu..."
+	FINSI
+FIN
