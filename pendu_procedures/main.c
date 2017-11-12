@@ -90,7 +90,7 @@ void minuscule(char mot[TAILLE], int longueurMot){
     }
 }
 
-//BUT : procédure qui crée un mot caché de taille égale au mot à trouver et visible avant chaque saisie par le joueur 2. Ce mot caché informe le joueur 2 sur la taille du mot à trouver et affiche les éventuels caractères corrects trouvés ce dernier.
+//BUT : procédure qui crée un mot caché de taille égale au mot à trouver et visible avant chaque saisie par le joueur 2. Ce mot caché informe le joueur 2 sur la taille du mot à trouver et affiche les éventuels caractères corrects trouvés par ce dernier.
 
 void cacherMot(char motCache[TAILLE],int longueurMot){
     int i=0;
@@ -113,9 +113,9 @@ void proposition(char *ptSaisie,char motCache[TAILLE],int cptEssai){
     fflush(stdin);
 }
 
-//BUT : procédure qui vérifie si le caractère saisit par le joueur 2 dans la procédure "proposition" est dans le mot à trouver
-//ENTREE : caractère saisit par le joueur 2 dans la procédure "proposition"
-//SORTIE : si le caractère saisit existe dans le mot à trouver, alors le programme affiche "Correct !", sinon "Faux !"
+//BUT : procédure qui vérifie si le caractère saisi par le joueur 2 dans la procédure "proposition" est dans le mot à trouver
+//ENTREE : caractère saisi par le joueur 2 dans la procédure "proposition"
+//SORTIE : si le caractère saisi existe dans le mot à trouver, alors le programme affiche "Correct !", sinon "Faux !"
 
 void comparer(char motCache[TAILLE],char mot[TAILLE],char saisie,int longueurMot,int *ptCptEssai){
     int i=0;

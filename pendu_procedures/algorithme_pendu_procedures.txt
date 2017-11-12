@@ -1,0 +1,156 @@
+//LENNY MORICONI
+
+ALGORITHME pendu
+//BUT : Programme qui demande à un joueur 1 de saisir une chaîne de caractère à trouver, puis à un joueur 2 de saisir un caractère afin de deviner le mot. Le joueur 2 a le droit à 7 erreurs. Le mot à trouver doit contenir au minimum 3 caractères.
+//ENTREE : Chaîne de caractères à trouver saisie par joueur 1, caractère proposé par joueur 2.
+//SORTIE : A chaque saisie de joueur 2 : nombre d'essais restants, mot caché complété des éventuels caractères trouvés par joueur 2, "Faux !" si proposition erronée, sinon "Correct !".
+
+CONST
+	TAILLE = 30		//taille maximale d'une chaîne de caractères
+	VIE = 7			//nombre d'erreurs que le joueur 2 peut commettre
+	MIN = 3			//taille minimale du mot à trouver
+
+//DEFINITIONS FONCTIONS
+
+FONCTION saisieMot(mot : CHAINE) : CHAINE
+	//BUT : fonction qui vérifie que le mot saisi par joueur 1 dans "saisieMot" est en minuscules, sinon change les caractères en minuscules
+	//ENTREE : chaîne de caractère saisie par joueur 1 dans "saisieMot"
+	//SORTIE : chaîne de caractère en minuscules
+DEBUT
+	//boucle tant que le mot à trouver ne fait pas une taille de minimum 3 caractères
+	TANTQUE LONGUEUR(mot) < MIN FAIRE
+		ECRIRE "Joueur 1, saisissez un mot d'au moins ",MIN," lettres a trouver :"
+		LIRE mot
+		SI LONGUEUR(mot) < MIN ALORS
+			ECRIRE "!!! Le mot doit contenir au moins",MIN,"lettres !!!"
+		FINSI
+	FINTANTQUE
+
+	saisieMot <- mot
+FINFONCTION
+
+FONCTION cacherMot(motCache : CHAINE, longueurMot : ENTIER) : CHAINE
+	//BUT : fonction qui crée un mot caché de taille égale au mot à trouver et visible avant chaque saisie par le joueur 2. Ce mot caché informe le joueur 2 sur la taille du mot à trouver et affiche les éventuels caractères corrects trouvés par ce dernier.
+VAR
+	i : ENTIER
+DEBUT
+	POUR i DE 1 A longueurMot FAIRE
+		motCache <- motCache + "*"
+	FINPOUR
+
+	cacherMot <- motCache
+FINFONCTION
+
+FONCTION proposition(saisie : CARACTERE, motCache : CHAINE, cptEssai : ENTIER) : CARACTERE
+	//BUT : fonction qui affiche le mot caché, le nombre d'essais restants et propose au joueur 2 de saisir un caractère
+	//ENTREE : joueur 2 saisit un caractère
+	//SORTIE : mot caché complété des éventuels caractères déjà trouvés, nombre d'essais restants
+DEBUT
+	ECRIRE "Mot a trouver : ",motCache
+	ECRIRE "Joueur 2, proposez une lettre. Il vous reste ",cptEssai," essai(s)"
+	LIRE saisie
+
+	proposition <- saisie
+FINFONCTION
+
+FONCTION comparer(trouve : BOOLEEN, motCache,mot : CHAINE, saisie : CARACTERE, longueurMot : ENTIER) : CHAINE
+	//BUT : fonction qui vérifie si le caractère saisi par le joueur 2 dans la fonction "proposition" est dans le mot à trouver
+	//ENTREE : caractère saisi par le joueur 2 dans la fonction "proposition"
+	//SORTIE : si le caractère saisi existe dans le mot à trouver, alors le programme renvoie "VRAI", sinon "FAUX"
+VAR
+	i : ENTIER
+DEBUT
+	//boucle for pour vérifier si la lettre proposée est dans le mot à trouver, si c'est le cas alors "trouve" prend la valeur "VRAI"
+	
+	POUR i DE 1 A longueurMot FAIRE
+		SI saisie = mot[i] ALORS
+			trouve <- VRAI
+		FINSI
+	FINPOUR
+
+	comparer <- trouve
+FINFONCTION
+
+FONCTION reponseFausse (cptEssai : ENTIER) : ENTIER
+	//BUT : enlève une vie au joueur 2 si la fonction "comparer" a renvoyé "FAUX" et notifie le joueur de sa mauvaise proposition
+	//ENTREE : compteur d'essai actuel
+	//SORTIE : compteur d'essai décrémenté de 1 et message "Faux !"
+DEBUT
+		cptEssai <- cptEssai - 1
+		ECRIRE "Faux !"
+
+		reponseFausse <- cptEssai
+FINFONCTION
+
+FONCTION reponseJuste (motCache,mot : CHAINE, saisie : CARACTERE, longueurMot : ENTIER) : CHAINE
+	//BUT : ajoute au mot caché le caractère saisi par joueur 2 si la fonction "comparer" a renvoyé "VRAI" et notifie le joueur de sa bonne réponse
+	//ENTREE : caractère saisi par le joueur 2 dans la fonction "proposition"
+	//SORTIE : mot caché complété du ou des caractères trouvé(s) et message "Correct !"
+VAR
+	i : ENTIER
+DEBUT
+	POUR i DE 1 A longueurMot FAIRE
+		SI saisie = mot[i] ALORS
+			motCache[i] = saisie
+		FINSI
+	FINPOUR
+	ECRIRE "Correct !"
+	reponseJuste <- motCache
+FINFONTION
+
+//PROGRAMME PRINCIPAL
+
+VAR
+	mot,motCache : CHAINE
+	saisie : CARACTERE
+	cptEssai,longueurMot,i : ENTIER
+	trouve : BOOLEEN
+
+DEBUT
+	
+	//initialisation des variables
+
+	longueurMot <- 0
+	motCache <- ""
+	cptEssai <- VIE
+
+	//saisie du mot à trouver par le joueur 1
+	mot <- saisieMot(mot) 
+
+	longueurMot <- LONGUEUR(mot)
+
+	//créer le mot caché contenant autant de lettres que le mot à trouver et complété des caractères trouvés par le joueur 2
+
+	motCache <- cacherMot(motCache,longueurMot)
+
+	//le joueur 2 propose des lettres tant qu'il n'a pas trouvé toutes les lettres du mot à trouver ou qu'il n'a pas commis 7 erreurs
+
+	TANTQUE motCache != mot ET cptEssai > 0 FAIRE
+
+		trouve <- FAUX 
+
+		//proposition d'un caractère par joueur 2
+
+		saisie <- proposition(saisie,motCache,cptEssai)
+
+		//compare la proposition du joueur 2 avec les lettres du mot à trouver
+
+		trouve <- comparer(trouve,motCache,mot,saisie,longueurMot)
+
+		//si la valeur de "trouve" est toujours "FAUX" alors la lettre proposée n'est pas dans le mot à trouver, le joueur 2 perd donc une vie
+
+		SI trouve = FAUX ALORS
+			cptEssai <- reponseFausse(cptEssai)
+		SINON
+			motCache <- reponseJuste(motCache,mot,saisie,longueurMot)
+		FINSI
+	FINTANTQUE
+
+	//lorsqu'on sort de la boucle tant que, si le joueur 2 a encore des vies, cela signifie qu'il a forcément trouvé le mot (victoire), sinon c'est qu'il a commis 7 erreurs (défaite)
+
+	SI cptEssai != 0 ALORS
+		ECRIRE "Bravo !"
+	SINON
+		ECRIRE "Vous avez perdu..."
+	FINSI
+FIN

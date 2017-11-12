@@ -46,7 +46,7 @@ DEBUT
 
 	TANTQUE motCache != mot ET cptEssai > 0 FAIRE
 		trouve <- FAUX
-		ECRIRE "Mot à trouver : ",motCache
+		ECRIRE "Mot a trouver : ",motCache
 		ECRIRE "Joueur 2, proposez une lettre. Il vous reste ",cptEssai," essai(s)"
 		LIRE saisie
 
