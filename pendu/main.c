@@ -6,6 +6,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>  //permet l'utilisation des fonctions "isupper()" et "tolower()"
 
 //CONSTANTES
 #define TAILLE 30   //taille maximale d'une chaîne de caractères
