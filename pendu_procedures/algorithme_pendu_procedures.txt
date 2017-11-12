@@ -103,7 +103,7 @@ FINFONTION
 VAR
 	mot,motCache : CHAINE
 	saisie : CARACTERE
-	cptEssai,longueurMot,i : ENTIER
+	cptEssai,longueurMot : ENTIER
 	trouve : BOOLEEN
 
 DEBUT
